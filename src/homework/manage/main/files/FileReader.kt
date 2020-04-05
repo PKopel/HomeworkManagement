@@ -8,13 +8,19 @@ import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 import java.util.*
 
-fun fileName(task: Task): String {
+fun taskFileName(task: Task): String {
     val assignedString = dateFormat.format(task.assignmentDate)
     val dueString = dateFormat.format(task.dueDate)
     return "${assignedString}_${task.subject.trim()}_${dueString}.txt"
 }
 
-fun readFile(file: File): Task {
+fun readSubjects(file: File): List<String> {
+    val subjects = mutableListOf<String>()
+    file.forEachLine { subjects.add(it.trim()) }
+    return subjects
+}
+
+fun readTask(file: File): Task {
     var assignmentDate = Date()
     var dueDate = Date()
     var subject = String()
@@ -29,7 +35,7 @@ fun readFile(file: File): Task {
                 dueDate = dateFormat.parse(it.removePrefix("data oddania:"))
             }
             it.contains("przedmiot:") -> {
-                subject = it.removePrefix("przedmiot:")
+                subject = it.removePrefix("przedmiot:").trim()
             }
             it.contains("do wysłania:") -> {
                 toSend = it.contains("tak")
@@ -42,8 +48,8 @@ fun readFile(file: File): Task {
     return Task(assignmentDate, dueDate, subject, toSend, contents)
 }
 
-fun writeFile(task: Task) {
-    val fileName = fileName(task)
+fun writeTask(task: Task) {
+    val fileName = taskFileName(task)
     val assignedString = dateFormat.format(task.assignmentDate)
     val dueString = dateFormat.format(task.dueDate)
     val toSendString = if (task.toSend) "tak" else "nie"
@@ -53,8 +59,8 @@ fun writeFile(task: Task) {
     )
 }
 
-fun moveFile(task: Task, fromDir: String, toDir: String) {
-    val fileName = fileName(task)
+fun moveTask(task: Task, fromDir: String, toDir: String) {
+    val fileName = taskFileName(task)
     val sourcePath = Paths.get("$fromDir/$fileName")
     val targetPath = Paths.get("$toDir/$fileName")
     Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING)

@@ -3,30 +3,39 @@ package homework.manage.main.view
 import homework.manage.main.model.Task
 import homework.manage.main.model.TaskLists
 import homework.manage.main.model.TaskLists.dateFormat
-import homework.manage.main.run
-import java.awt.FlowLayout
+import homework.manage.main.model.TaskLists.subjects
+import java.awt.BorderLayout
 import java.awt.GridLayout
+import java.util.*
 import javax.swing.*
 import javax.swing.border.TitledBorder
+import javax.swing.text.DateFormatter
+
 
 class TaskForm(editable: Boolean) : JFrame() {
-    private val subject = JTextField()
-    private val assignedDate = JTextField()
-    private val dueDate = JTextField()
+    private val subject = JComboBox<String>()
+
+    private val assignedDate = JFormattedTextField(dateFormat)
+    private val dueDate = JFormattedTextField(dateFormat)
     private val toSend = JTextField()
     private val contents = JTextArea()
     private val addButton = button("Dodaj") {
-        TaskLists.addNewTask(assignedDate.text, dueDate.text, subject.text, toSend.text, contents.text)
-        run(TasksApp(), 600, 600, "Zadania domowe")
+        TaskLists.addNewTask(
+            assignedDate.text,
+            dueDate.text,
+            subject.selectedItem as String,
+            toSend.text,
+            contents.text
+        )
+        TasksApp.refresh()
         dispose()
     }
-    private val returnButton = button ("Wróć"){
-        run(TasksApp(), 600, 600, "Zadania domowe")
+    private val returnButton = button("Wróć") {
         dispose()
     }
 
     constructor(task: Task) : this(false) {
-        subject.text = task.subject
+        subject.selectedItem = task.subject
         assignedDate.text = dateFormat.format(task.assignmentDate)
         dueDate.text = dateFormat.format(task.dueDate)
         toSend.text = if (task.toSend) "tak" else "nie"
@@ -34,9 +43,18 @@ class TaskForm(editable: Boolean) : JFrame() {
     }
 
     init {
-        subject.isEditable = editable
+        subject.model = DefaultComboBoxModel<String>().apply { addAll(subjects) }
+
         assignedDate.isEditable = editable
+        (assignedDate.formatter as DateFormatter).allowsInvalid = false
+        (assignedDate.formatter as DateFormatter).overwriteMode = true
+        assignedDate.text = dateFormat.format(Date())
+
         dueDate.isEditable = editable
+        (dueDate.formatter as DateFormatter).allowsInvalid = false
+        (dueDate.formatter as DateFormatter).overwriteMode = true
+        dueDate.text = dateFormat.format(Date())
+
         toSend.isEditable = editable
         contents.isEditable = editable
         subject.border = TitledBorder("Przedmoit")
@@ -44,18 +62,23 @@ class TaskForm(editable: Boolean) : JFrame() {
         dueDate.border = TitledBorder("Data oddania")
         toSend.border = TitledBorder("Do wysłania")
         contents.border = TitledBorder("Treść")
-        this.layout = GridLayout(6, 1)
-        this.add(subject)
-        this.add(assignedDate)
-        this.add(dueDate)
-        this.add(toSend)
-        this.add(contents)
+
+        val header = JPanel()
+        header.layout = GridLayout(1, 4)
+        header.add(subject)
+        header.add(assignedDate)
+        header.add(dueDate)
+        header.add(toSend)
+
+        this.add(BorderLayout.NORTH, header)
+
+        this.add(BorderLayout.CENTER, contents)
 
         val buttons = JPanel()
-        buttons.layout = FlowLayout()
+        buttons.layout = GridLayout(1, 2)
         buttons.add(returnButton)
         if (editable) buttons.add(addButton)
 
-        this.add(buttons)
+        this.add(BorderLayout.SOUTH, buttons)
     }
 }
