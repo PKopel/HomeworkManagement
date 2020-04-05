@@ -1,18 +1,18 @@
 package homework.manage.main.view
 
-import java.awt.FlowLayout
-import javax.swing.DefaultListModel
-import javax.swing.JFrame
-import javax.swing.JList
 import homework.manage.main.model.Task
+import homework.manage.main.model.TaskLists
 import homework.manage.main.model.TaskLists.tasksAssigned
 import homework.manage.main.model.TaskLists.tasksFinished
 import homework.manage.main.model.TaskLists.tasksToSend
-import java.awt.ActiveEvent
 import java.awt.BorderLayout
+import java.awt.FlowLayout
 import java.awt.GridLayout
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
+import javax.swing.DefaultListModel
+import javax.swing.JFrame
+import javax.swing.JList
 import javax.swing.JPanel
 
 class TasksApp : JFrame() {
@@ -29,27 +29,24 @@ class TasksApp : JFrame() {
 
     private val finishButton = button("Oznacz już zrobione") {
         val taskId = listAssigned.selectedIndex
-        val task = tasksAssigned.removeAt(taskId)
+        val task = TaskLists.finishTask(taskId)
         modelAssigned.remove(taskId)
         if (task.toSend) {
-            tasksToSend.add(task)
             modelToSend.addElement(task)
         } else {
-            tasksFinished.add(task)
             modelFinished.addElement(task)
         }
     }
     private val sendButton = button("Oznacz już wysłane") {
         val taskId = listToSend.selectedIndex
-        val task = tasksToSend.removeAt(taskId)
+        val task = TaskLists.sendTask(taskId)
         modelToSend.remove(taskId)
-        tasksFinished.add(task)
         modelFinished.addElement(task)
     }
 
     private val listListener = object : MouseAdapter() {
         override fun mouseClicked(e: MouseEvent?) {
-            val list = e?.source as JList<Task>
+            @Suppress("UNCHECKED_CAST") val list = e?.source as JList<Task>
             if (e.clickCount == 2) {
                 homework.manage.main.run(TaskForm(list.selectedValue), 1000, 1000, "Zadanie")
                 dispose()

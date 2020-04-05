@@ -1,11 +1,10 @@
 package homework.manage.main.model
 
+import homework.manage.main.files.moveFile
 import homework.manage.main.files.readFile
 import homework.manage.main.files.writeFile
 import java.io.File
-import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.util.*
 
 object TaskLists {
     val tasksAssigned = mutableListOf<Task>()
@@ -13,13 +12,13 @@ object TaskLists {
     val tasksToSend = mutableListOf<Task>()
     val dateFormat = SimpleDateFormat("dd-mm-yyyy")
 
-    public fun fillLists(assigned: String, finished: String, toSend: String) {
+    fun fillLists(assigned: String, finished: String, toSend: String) {
         File(assigned).walk().forEach { if (it.isFile) tasksAssigned.add(readFile(it)) }
         File(finished).walk().forEach { if (it.isFile) tasksFinished.add(readFile(it)) }
         File(toSend).walk().forEach { if (it.isFile) tasksToSend.add(readFile(it)) }
     }
 
-    public fun addNewTask(assigned: String, due: String, subject: String, toSend: String, contents: String) {
+    fun addNewTask(assigned: String, due: String, subject: String, toSend: String, contents: String) {
         val isToSend = toSend.contains("tak")
         val newTask = Task(
             dateFormat.parse(assigned),
@@ -30,5 +29,25 @@ object TaskLists {
         )
         tasksAssigned.add(newTask)
         writeFile(newTask)
+    }
+
+    fun finishTask(taskId: Int): Task {
+        val task = tasksAssigned.removeAt(taskId)
+        val toDir = if (task.toSend) {
+            tasksToSend.add(task)
+            "do_wyslania"
+        } else {
+            tasksFinished.add(task)
+            "gotowe"
+        }
+        moveFile(task, "zadane", toDir)
+        return task
+    }
+
+    fun sendTask(taskId: Int): Task {
+        val task = tasksToSend.removeAt(taskId)
+        tasksFinished.add(task)
+        moveFile(task, "do_wyslania", "gotowe")
+        return task
     }
 }
