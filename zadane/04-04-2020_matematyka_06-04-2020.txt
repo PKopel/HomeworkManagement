@@ -1,5 +1,5 @@
 data zadania: 04-04-2020
 data oddania: 06-04-2020
-do wysłania: true
+do wysłania: tak
 przedmiot: matematyka
 treść: rozwiązać zadanie i wysłać
