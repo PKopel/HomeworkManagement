@@ -1,0 +1,5 @@
+data zadania: 03-04-2020
+data oddania: 05-04-2020
+do wysłania: true
+przedmiot: plastyka
+treść: narysować zadanie i wysłać

@@ -19,12 +19,13 @@ object TaskLists {
         File(toSend).walk().forEach { if (it.isFile) tasksToSend.add(readFile(it)) }
     }
 
-    public fun addNewTask(assigned: String, due: String, subject: String, toSend: Boolean, contents: String) {
+    public fun addNewTask(assigned: String, due: String, subject: String, toSend: String, contents: String) {
+        val isToSend = toSend.contains("tak")
         val newTask = Task(
             dateFormat.parse(assigned),
             dateFormat.parse(due),
             subject,
-            toSend,
+            isToSend,
             contents
         )
         tasksAssigned.add(newTask)
