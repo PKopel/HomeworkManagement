@@ -10,19 +10,21 @@ import javax.swing.SwingUtilities
 import javax.swing.UIManager
 import javax.swing.plaf.FontUIResource
 
-
-fun main() {
-    setUIFont(FontUIResource(Font("MS Mincho", Font.PLAIN, 20)))
-    val wd = Path.of(".").toString()
-    val pathToAssigned = "$wd/zadane"
-    val pathToFinished = "$wd/gotowe"
-    val pathToSend = "$wd/do_wyslania"
-    checkDir(pathToAssigned)
-    checkDir(pathToFinished)
-    checkDir(pathToSend)
-    TaskLists.fillSubjects(wd)
-    TaskLists.fillLists(pathToAssigned, pathToFinished, pathToSend)
-    run(TasksApp, name = "Zadania domowe")
+object Main {
+    @JvmStatic
+    fun main(args: Array<String>) {
+        setUIFont(FontUIResource(Font("MS Mincho", Font.PLAIN, 20)))
+        val wd = Path.of(".").toString()
+        val pathToAssigned = "$wd/zadane"
+        val pathToFinished = "$wd/gotowe"
+        val pathToSend = "$wd/do_wyslania"
+        checkDir(pathToAssigned)
+        checkDir(pathToFinished)
+        checkDir(pathToSend)
+        TaskLists.fillSubjects(wd)
+        TaskLists.fillLists(pathToAssigned, pathToFinished, pathToSend)
+        run(TasksApp, name = "Zadania domowe")
+    }
 }
 
 fun run(f: JFrame, width: Int = 0, height: Int = 0, name: String) {
