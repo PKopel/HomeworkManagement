@@ -28,6 +28,7 @@ object TasksApp : JFrame() {
         homework.manage.main.run(TaskForm(false), "Zadanie", DISPOSE_ON_CLOSE, 1000, 1000)
     }
 
+    //aaa
     private val finishButton = button("Oznacz już zrobione", KeyStroke.getKeyStroke(VK_Z, CTRL_DOWN_MASK)) {
         val taskId = listAssigned.selectedIndex
         val task = TaskLists.finishTask(taskId)
