@@ -29,10 +29,10 @@ fun readTask(file: File): Task {
     file.forEachLine {
         when {
             it.contains("data zadania:") -> {
-                assignmentDate = dateFormat.parse(it.removePrefix("data zadania:"))
+                assignmentDate = dateFormat.parse(it.removePrefix("data zadania:").trim())
             }
             it.contains("data oddania:") -> {
-                dueDate = dateFormat.parse(it.removePrefix("data oddania:"))
+                dueDate = dateFormat.parse(it.removePrefix("data oddania:").trim())
             }
             it.contains("przedmiot:") -> {
                 subject = it.removePrefix("przedmiot:").trim()

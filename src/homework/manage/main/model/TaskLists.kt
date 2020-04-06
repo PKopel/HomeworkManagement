@@ -12,7 +12,7 @@ object TaskLists {
     val tasksFinished = mutableListOf<Task>()
     val tasksToSend = mutableListOf<Task>()
     val subjects = mutableListOf<String>()
-    val dateFormat = SimpleDateFormat("dd-mm-yyyy")
+    val dateFormat = SimpleDateFormat("dd-MM-yyyy")
 
     fun fillLists(assigned: String, finished: String, toSend: String) {
         File(assigned).walk().forEach { if (it.isFile) tasksAssigned.add(readTask(it)) }
