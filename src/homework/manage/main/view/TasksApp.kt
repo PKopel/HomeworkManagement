@@ -25,7 +25,7 @@ object TasksApp : JFrame() {
     private val modelToSend = DefaultListModel<Task>()
     private val listToSend = JList<Task>()
     private val addButton = button("Dodaj zadanie", KeyStroke.getKeyStroke(VK_N, CTRL_DOWN_MASK)) {
-        homework.manage.main.run(TaskForm(), "Zadanie", DISPOSE_ON_CLOSE, 1000, 1000)
+        homework.manage.main.run(TaskForm(false), "Zadanie", DISPOSE_ON_CLOSE, 1000, 1000)
     }
 
     private val finishButton = button("Oznacz już zrobione", KeyStroke.getKeyStroke(VK_Z, CTRL_DOWN_MASK)) {
@@ -87,10 +87,10 @@ object TasksApp : JFrame() {
                 cellHasFocus: Boolean
             ): Component {
                 val component = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus)
-                background = when {
+                foreground = when {
                     DateDaysComparator().compare((value as Task).dueDate, Date()) < 0 -> Color.RED
-                    DateDaysComparator().compare(value.dueDate, Date()) == 0 -> Color.YELLOW
-                    else -> Color.GREEN
+                    DateDaysComparator().compare(value.dueDate, Date()) == 0 -> Color.YELLOW.darker()
+                    else -> Color.GREEN.darker()
                 }
                 if (isSelected) {
                     background = background.darker()

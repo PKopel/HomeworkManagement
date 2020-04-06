@@ -41,7 +41,7 @@ fun readTask(file: File): Task {
                 toSend = it.contains("tak")
             }
             else -> {
-                contents += it.removePrefix("treść:")
+                contents += it.removePrefix("treść:") + "\n"
             }
         }
     }
@@ -55,7 +55,7 @@ fun writeTask(task: Task) {
     val toSendString = if (task.toSend) "tak" else "nie"
     val file = File("zadane/$fileName")
     file.writeText(
-        "data zadania: $assignedString\ndata oddania: $dueString\ndo wysłania: ${toSendString}\nprzedmiot: ${task.subject}\ntreść: ${task.contents}"
+        "data zadania: $assignedString\ndata oddania: $dueString\ndo wysłania: ${toSendString}\nprzedmiot: ${task.subject}\n${task.contents}"
     )
 }
 
