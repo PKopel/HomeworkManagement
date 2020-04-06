@@ -1,9 +1,7 @@
 package homework.manage.main.model
 
-import homework.manage.main.files.moveTask
-import homework.manage.main.files.readSubjects
-import homework.manage.main.files.readTask
-import homework.manage.main.files.writeTask
+import homework.manage.main.TaskComparator
+import homework.manage.main.files.*
 import java.io.File
 import java.text.SimpleDateFormat
 
@@ -34,7 +32,18 @@ object TaskLists {
             contents
         )
         tasksAssigned.add(newTask)
+        tasksAssigned.sortWith(TaskComparator())
         writeTask(newTask)
+    }
+
+    fun removeTask(task: Task) {
+        val taskDir = when {
+            tasksAssigned.remove(task) -> "zadane"
+            tasksFinished.remove(task) -> "gotowe"
+            tasksToSend.remove(task) -> "do_wyslania"
+            else -> throw IllegalStateException()
+        }
+        File("$taskDir/${taskFileName(task)}").delete()
     }
 
     fun finishTask(taskId: Int): Task {

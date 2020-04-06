@@ -13,18 +13,52 @@ import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import java.util.*
 import javax.swing.*
+import javax.swing.JOptionPane.YES_NO_OPTION
 import javax.swing.border.TitledBorder
 import javax.swing.text.DateFormatter
 
 
-class TaskForm() : JFrame() {
+class TaskForm(private val editing: Boolean) : JFrame() {
     private val subject = JComboBox<String>()
+    private var task: Task? = null
 
     private val assignedDate = JFormattedTextField(dateFormat)
     private val dueDate = JFormattedTextField(dateFormat)
     private val toSend = JTextField()
     private val contents = JTextArea()
+    private val removeButton = button("Usuń") {
+        val confirmed = JOptionPane.showConfirmDialog(
+            null,
+            "Czy na pewno chcesz usunąć to zadanie?",
+            "Usuwanie zadania",
+            YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE
+        )
+        if (confirmed == 0) {
+            TaskLists.removeTask(task!!)
+            TasksApp.refresh()
+            dispose()
+        }
+    }
     private val saveButton = button("Zapisz", KeyStroke.getKeyStroke(VK_S, CTRL_DOWN_MASK)) {
+        submit()
+        dispose()
+    }
+    private val returnButton = button("Wróć", KeyStroke.getKeyStroke(VK_X, CTRL_DOWN_MASK)) {
+        dispose()
+    }
+
+    constructor(task: Task) : this(true) {
+        subject.selectedItem = task.subject
+        assignedDate.text = dateFormat.format(task.assignmentDate)
+        dueDate.text = dateFormat.format(task.dueDate)
+        toSend.text = if (task.toSend) "tak" else "nie"
+        contents.text = task.contents
+        this.task = task
+    }
+
+    private fun submit() {
+        if (editing && task != null) TaskLists.removeTask(task!!)
         TaskLists.addNewTask(
             assignedDate.text,
             dueDate.text,
@@ -33,19 +67,6 @@ class TaskForm() : JFrame() {
             contents.text
         )
         TasksApp.refresh()
-        dispose()
-    }
-    private val returnButton = button("Wróć", KeyStroke.getKeyStroke(VK_X, CTRL_DOWN_MASK)) {
-        dispose()
-    }
-
-    constructor(task: Task) : this() {
-        subject.selectedItem = task.subject
-        assignedDate.text = dateFormat.format(task.assignmentDate)
-        dueDate.text = dateFormat.format(task.dueDate)
-        toSend.text = if (task.toSend) "tak" else "nie"
-        contents.text = task.contents
-
     }
 
     init {
@@ -85,8 +106,10 @@ class TaskForm() : JFrame() {
 
         this.add(BorderLayout.CENTER, contents)
 
-        val buttons = JPanel(GridLayout(1, 2))
+        val buttons = JPanel(GridLayout(1, 3))
+        removeButton.isEnabled = editing
         buttons.add(returnButton)
+        buttons.add(removeButton)
         buttons.add(saveButton)
 
         this.add(BorderLayout.SOUTH, buttons)

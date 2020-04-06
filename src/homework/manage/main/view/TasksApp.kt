@@ -25,9 +25,10 @@ object TasksApp : JFrame() {
     private val modelToSend = DefaultListModel<Task>()
     private val listToSend = JList<Task>()
     private val addButton = button("Dodaj zadanie", KeyStroke.getKeyStroke(VK_N, CTRL_DOWN_MASK)) {
-        homework.manage.main.run(TaskForm(), "Zadanie", DISPOSE_ON_CLOSE, 1000, 1000)
+        homework.manage.main.run(TaskForm(false), "Zadanie", DISPOSE_ON_CLOSE, 1000, 1000)
     }
 
+    //aaa
     private val finishButton = button("Oznacz już zrobione", KeyStroke.getKeyStroke(VK_Z, CTRL_DOWN_MASK)) {
         val taskId = listAssigned.selectedIndex
         val task = TaskLists.finishTask(taskId)
