@@ -35,6 +35,7 @@ hs_err_pid*
 zadane/*
 gotowe/*
 do_wyslania/*
+.usuniete
 
 
 # Ignore Gradle project-specific cache directory
