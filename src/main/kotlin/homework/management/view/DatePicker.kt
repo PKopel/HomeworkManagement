@@ -1,4 +1,4 @@
-package homework.manage.main.view
+package homework.management.main.view
 
 import java.awt.BorderLayout
 import java.awt.Color

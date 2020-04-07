@@ -1,9 +1,9 @@
-package homework.manage.main.view
+package homework.management.main.view
 
-import homework.manage.main.model.Task
-import homework.manage.main.model.TaskLists
-import homework.manage.main.model.TaskLists.dateFormat
-import homework.manage.main.model.TaskLists.subjects
+import homework.management.main.model.Task
+import homework.management.main.model.TaskLists
+import homework.management.main.model.TaskLists.dateFormat
+import homework.management.main.model.TaskLists.subjects
 import java.awt.BorderLayout
 import java.awt.GridLayout
 import java.awt.event.InputEvent.CTRL_DOWN_MASK

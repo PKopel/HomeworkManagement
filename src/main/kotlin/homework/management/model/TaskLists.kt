@@ -1,7 +1,11 @@
-package homework.manage.main.model
+package homework.management.main.model
 
-import homework.manage.main.TaskComparator
-import homework.manage.main.files.*
+import homework.management.main.TaskComparator
+import homework.management.main.files.*
+import homework.management.main.files.moveTask
+import homework.management.main.files.readSubjects
+import homework.management.main.files.readTask
+import homework.management.main.files.writeTask
 import java.io.File
 import java.text.SimpleDateFormat
 
@@ -25,11 +29,11 @@ object TaskLists {
     fun addNewTask(assigned: String, due: String, subject: String, toSend: String, contents: String) {
         val isToSend = toSend.contains("tak")
         val newTask = Task(
-            dateFormat.parse(assigned),
-            dateFormat.parse(due),
-            subject,
-            isToSend,
-            contents
+                dateFormat.parse(assigned),
+                dateFormat.parse(due),
+                subject,
+                isToSend,
+                contents
         )
         tasksAssigned.add(newTask)
         tasksAssigned.sortWith(TaskComparator())
@@ -43,7 +47,7 @@ object TaskLists {
             tasksToSend.remove(task) -> "do_wyslania"
             else -> throw IllegalStateException()
         }
-        moveTask(task,taskDir,"./.usuniete")
+        moveTask(task, taskDir, "./.usuniete")
     }
 
     fun finishTask(taskId: Int): Task {

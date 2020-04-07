@@ -1,6 +1,6 @@
-package homework.manage.main
+package homework.management.main
 
-import homework.manage.main.model.Task
+import homework.management.main.model.Task
 import java.io.File
 import java.util.*
 import javax.swing.JFrame

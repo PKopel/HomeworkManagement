@@ -1,4 +1,4 @@
-package homework.manage.main.model
+package homework.management.main.model
 
 import java.util.*
 

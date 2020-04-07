@@ -1,13 +1,13 @@
-package homework.manage.main.view
+package homework.management.main.view
 
-import homework.manage.main.DateDaysComparator
-import homework.manage.main.TaskComparator
-import homework.manage.main.model.Task
-import homework.manage.main.model.TaskLists
-import homework.manage.main.model.TaskLists.subjects
-import homework.manage.main.model.TaskLists.tasksAssigned
-import homework.manage.main.model.TaskLists.tasksFinished
-import homework.manage.main.model.TaskLists.tasksToSend
+import homework.management.main.DateDaysComparator
+import homework.management.main.TaskComparator
+import homework.management.main.model.Task
+import homework.management.main.model.TaskLists
+import homework.management.main.model.TaskLists.subjects
+import homework.management.main.model.TaskLists.tasksAssigned
+import homework.management.main.model.TaskLists.tasksFinished
+import homework.management.main.model.TaskLists.tasksToSend
 import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.KeyEvent.*
@@ -25,7 +25,7 @@ object TasksApp : JFrame() {
     private val modelToSend = DefaultListModel<Task>()
     private val listToSend = JList<Task>()
     private val addButton = button("Dodaj zadanie", KeyStroke.getKeyStroke(VK_N, CTRL_DOWN_MASK)) {
-        homework.manage.main.run(TaskForm(false), "Zadanie", DISPOSE_ON_CLOSE, 1000, 1000)
+        homework.management.main.run(TaskForm(false), "Zadanie", DISPOSE_ON_CLOSE, 1000, 1000)
     }
 
     //aaa
@@ -68,7 +68,7 @@ object TasksApp : JFrame() {
         override fun mouseClicked(e: MouseEvent?) {
             @Suppress("UNCHECKED_CAST") val list = e?.source as JList<Task>
             if (e.clickCount == 2) {
-                homework.manage.main.run(TaskForm(list.selectedValue), "Zadanie", DISPOSE_ON_CLOSE, 1000, 1000)
+                homework.management.main.run(TaskForm(list.selectedValue), "Zadanie", DISPOSE_ON_CLOSE, 1000, 1000)
             }
         }
     }
