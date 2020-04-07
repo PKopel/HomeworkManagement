@@ -16,23 +16,28 @@ import javax.swing.*
 import javax.swing.JOptionPane.YES_NO_OPTION
 import javax.swing.border.TitledBorder
 import javax.swing.text.DateFormatter
+import javax.swing.text.JTextComponent
 
 
-class TaskForm(private val editing: Boolean) : JFrame() {
+class TaskForm(private var viewing: Boolean) : JFrame() {
     private val subject = JComboBox<String>()
     private var task: Task? = null
 
+    private val header = JPanel(GridLayout(1, 4))
     private val assignedDate = JFormattedTextField(dateFormat)
     private val dueDate = JFormattedTextField(dateFormat)
     private val toSend = JTextField()
+
     private val contents = JTextArea()
+
+    private val buttons = JPanel(GridLayout(1, 3))
     private val removeButton = button("Usuń") {
         val confirmed = JOptionPane.showConfirmDialog(
-            null,
-            "Czy na pewno chcesz usunąć to zadanie?",
-            "Usuwanie zadania",
-            YES_NO_OPTION,
-            JOptionPane.WARNING_MESSAGE
+                null,
+                "Czy na pewno chcesz usunąć to zadanie?",
+                "Usuwanie zadania",
+                YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
         )
         if (confirmed == 0) {
             TaskLists.removeTask(task!!)
@@ -40,15 +45,21 @@ class TaskForm(private val editing: Boolean) : JFrame() {
             dispose()
         }
     }
-    private val saveButton = button("Zapisz", KeyStroke.getKeyStroke(VK_S, CTRL_DOWN_MASK)) {
-        submit()
-        dispose()
+    private val saveButton = button(if (viewing) "Edytuj" else "Zapisz", KeyStroke.getKeyStroke(VK_S, CTRL_DOWN_MASK)) {
+        if (viewing) {
+            viewing = false
+            setEditable(true)
+        } else {
+            submit()
+            dispose()
+        }
     }
     private val returnButton = button("Wróć", KeyStroke.getKeyStroke(VK_X, CTRL_DOWN_MASK)) {
         dispose()
     }
 
     constructor(task: Task) : this(true) {
+        setEditable(false)
         subject.selectedItem = task.subject
         assignedDate.text = dateFormat.format(task.assignmentDate)
         dueDate.text = dateFormat.format(task.dueDate)
@@ -58,15 +69,23 @@ class TaskForm(private val editing: Boolean) : JFrame() {
     }
 
     private fun submit() {
-        if (editing && task != null) TaskLists.removeTask(task!!)
+        if (task != null) TaskLists.removeTask(task!!)
         TaskLists.addNewTask(
-            assignedDate.text,
-            dueDate.text,
-            subject.selectedItem as String,
-            toSend.text,
-            contents.text
+                assignedDate.text,
+                dueDate.text,
+                subject.selectedItem as String,
+                toSend.text,
+                contents.text
         )
         TasksApp.refresh()
+    }
+
+    private fun setEditable(editable: Boolean) {
+        header.components.forEach {
+            if (it is JTextComponent) it.isEditable = editable
+        }
+        contents.isEditable = editable
+        saveButton.text = if (editable) "Zapisz" else "Edytuj"
     }
 
     init {
@@ -96,7 +115,6 @@ class TaskForm(private val editing: Boolean) : JFrame() {
         toSend.border = TitledBorder("Do wysłania")
         contents.border = TitledBorder("Treść")
 
-        val header = JPanel(GridLayout(1, 4))
         header.add(subject)
         header.add(assignedDate)
         header.add(dueDate)
@@ -106,12 +124,12 @@ class TaskForm(private val editing: Boolean) : JFrame() {
 
         this.add(BorderLayout.CENTER, contents)
 
-        val buttons = JPanel(GridLayout(1, 3))
-        removeButton.isEnabled = editing
+        removeButton.isEnabled = viewing
         buttons.add(returnButton)
         buttons.add(removeButton)
         buttons.add(saveButton)
 
         this.add(BorderLayout.SOUTH, buttons)
+        setEditable(false)
     }
 }

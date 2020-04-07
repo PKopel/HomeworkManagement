@@ -43,7 +43,7 @@ object TaskLists {
             tasksToSend.remove(task) -> "do_wyslania"
             else -> throw IllegalStateException()
         }
-        File("$taskDir/${taskFileName(task)}").delete()
+        moveTask(task,taskDir,"./.usuniete")
     }
 
     fun finishTask(taskId: Int): Task {

@@ -14,9 +14,11 @@ object Main {
         val pathToAssigned = "$wd/zadane"
         val pathToFinished = "$wd/gotowe"
         val pathToSend = "$wd/do_wyslania"
+        val pathToDeleted = "$wd/.usuniete"
         checkDir(pathToAssigned)
         checkDir(pathToFinished)
         checkDir(pathToSend)
+        checkDir(pathToDeleted)
         TaskLists.fillSubjects(wd)
         TaskLists.fillLists(pathToAssigned, pathToFinished, pathToSend)
         run(TasksApp, "Zadania domowe")
