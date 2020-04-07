@@ -130,6 +130,5 @@ class TaskForm(private var viewing: Boolean) : JFrame() {
         buttons.add(saveButton)
 
         this.add(BorderLayout.SOUTH, buttons)
-        setEditable(false)
     }
 }

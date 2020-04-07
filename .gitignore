@@ -43,4 +43,4 @@ do_wyslania/*
 
 # Ignore Gradle build output directory
 build
-/src/META-INF/
+/src/META-INF/*
