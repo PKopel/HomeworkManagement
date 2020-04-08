@@ -1,4 +1,4 @@
-package homework.management.main.view
+package homework.management.view
 
 import java.awt.BorderLayout
 import java.awt.Color
@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.swing.*
 
-class DatePicker(parent: JFrame?) {
+class DatePicker(parent: JFrame) {
     private val daysOfWeek = arrayOf("Pon", "Wt", "Śr", "Czw", "Pt", "Sob", "Nd")
 
     private var selectedYear = Calendar.getInstance()[Calendar.YEAR]
@@ -49,7 +49,7 @@ class DatePicker(parent: JFrame?) {
     fun pickDate(): String {
         if (selectedDay == "") return selectedDay
         val sdf = SimpleDateFormat(
-            "dd-MM-yyyy"
+                "dd-MM-yyyy"
         )
         val cal = Calendar.getInstance()
         cal[selectedYear, selectedMonth] = selectedDay.toInt()

@@ -1,11 +1,33 @@
-package homework.management.main.view
+package homework.management.view
 
 import java.awt.Color
 import java.awt.event.ActionEvent
-import javax.swing.AbstractAction
-import javax.swing.JButton
-import javax.swing.JComponent
-import javax.swing.KeyStroke
+import javax.swing.*
+import javax.swing.plaf.FontUIResource
+
+
+fun run(f: JFrame, name: String, exitOperation: Int = JFrame.EXIT_ON_CLOSE, width: Int = 0, height: Int = 0) {
+    SwingUtilities.invokeLater {
+        f.title = name
+        f.defaultCloseOperation = exitOperation
+        if (width == 0 || height == 0)
+            f.extendedState = JFrame.MAXIMIZED_BOTH
+        else
+            f.setSize(width, height)
+        f.isVisible = true
+    }
+}
+
+fun setUIFont(f: FontUIResource) {
+    val keys = UIManager.getDefaults().keys()
+    while (keys.hasMoreElements()) {
+        val key = keys.nextElement()
+        val value = UIManager.get(key)
+        if (value is FontUIResource) {
+            UIManager.put(key, f)
+        }
+    }
+}
 
 fun button(
     text: String = "",

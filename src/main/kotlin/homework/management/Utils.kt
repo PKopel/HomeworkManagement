@@ -1,12 +1,7 @@
-package homework.management.main
+package homework.management
 
-import homework.management.main.model.Task
-import java.io.File
+import homework.management.model.Task
 import java.util.*
-import javax.swing.JFrame
-import javax.swing.SwingUtilities
-import javax.swing.UIManager
-import javax.swing.plaf.FontUIResource
 
 class TaskComparator : Comparator<Task> {
     override fun compare(p0: Task?, p1: Task?): Int {
@@ -22,34 +17,6 @@ class DateDaysComparator : Comparator<Date> {
             c1[Calendar.YEAR] != c2[Calendar.YEAR] -> c1[Calendar.YEAR] - c2[Calendar.YEAR]
             c1[Calendar.MONTH] != c2[Calendar.MONTH] -> c1[Calendar.MONTH] - c2[Calendar.MONTH]
             else -> c1[Calendar.DAY_OF_MONTH] - c2[Calendar.DAY_OF_MONTH]
-        }
-    }
-}
-
-fun run(f: JFrame, name: String, exitOperation: Int = JFrame.EXIT_ON_CLOSE, width: Int = 0, height: Int = 0) {
-    SwingUtilities.invokeLater {
-        f.title = name
-        f.defaultCloseOperation = exitOperation
-        if (width == 0 || height == 0)
-            f.extendedState = JFrame.MAXIMIZED_BOTH
-        else
-            f.setSize(width, height)
-        f.isVisible = true
-    }
-}
-
-fun checkDir(path: String) {
-    val dir = File(path)
-    dir.mkdir()
-}
-
-fun setUIFont(f: FontUIResource) {
-    val keys = UIManager.getDefaults().keys()
-    while (keys.hasMoreElements()) {
-        val key = keys.nextElement()
-        val value = UIManager.get(key)
-        if (value is FontUIResource) {
-            UIManager.put(key, f)
         }
     }
 }

@@ -1,13 +1,14 @@
-package homework.management.main.view
+package homework.management.view
 
-import homework.management.main.DateDaysComparator
-import homework.management.main.TaskComparator
-import homework.management.main.model.Task
-import homework.management.main.model.TaskLists
-import homework.management.main.model.TaskLists.subjects
-import homework.management.main.model.TaskLists.tasksAssigned
-import homework.management.main.model.TaskLists.tasksFinished
-import homework.management.main.model.TaskLists.tasksToSend
+import homework.management.DateDaysComparator
+import homework.management.TaskComparator
+import homework.management.files.Resources
+import homework.management.model.Task
+import homework.management.model.TaskLists
+import homework.management.model.TaskLists.subjects
+import homework.management.model.TaskLists.tasksAssigned
+import homework.management.model.TaskLists.tasksFinished
+import homework.management.model.TaskLists.tasksToSend
 import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.KeyEvent.*
@@ -24,12 +25,12 @@ object TasksApp : JFrame() {
     private val listFinished = JList<Task>()
     private val modelToSend = DefaultListModel<Task>()
     private val listToSend = JList<Task>()
-    private val addButton = button("Dodaj zadanie", KeyStroke.getKeyStroke(VK_N, CTRL_DOWN_MASK)) {
-        homework.management.main.run(TaskForm(false), "Zadanie", DISPOSE_ON_CLOSE, 1000, 1000)
+    private val addButton = button(Resources.addLabel, KeyStroke.getKeyStroke(VK_N, CTRL_DOWN_MASK)) {
+        run(TaskView(false), Resources.taskTitle, DISPOSE_ON_CLOSE, 1000, 1000)
     }
 
     //aaa
-    private val finishButton = button("Oznacz już zrobione", KeyStroke.getKeyStroke(VK_Z, CTRL_DOWN_MASK)) {
+    private val finishButton = button(Resources.finishLabel, KeyStroke.getKeyStroke(VK_Z, CTRL_DOWN_MASK)) {
         val taskId = listAssigned.selectedIndex
         val task = TaskLists.finishTask(taskId)
         modelAssigned.remove(taskId)
@@ -40,14 +41,14 @@ object TasksApp : JFrame() {
         }
     }
 
-    private val sendButton = button("Oznacz już wysłane", KeyStroke.getKeyStroke(VK_W, CTRL_DOWN_MASK)) {
+    private val sendButton = button(Resources.sendLabel, KeyStroke.getKeyStroke(VK_W, CTRL_DOWN_MASK)) {
         val taskId = listToSend.selectedIndex
         val task = TaskLists.sendTask(taskId)
         modelToSend.remove(taskId)
         modelFinished.addElement(task)
     }
 
-    private val clearFilterButton = button("Wyczyść") {
+    private val clearFilterButton = button(Resources.clearLabel) {
         refresh()
     }
 
@@ -68,7 +69,7 @@ object TasksApp : JFrame() {
         override fun mouseClicked(e: MouseEvent?) {
             @Suppress("UNCHECKED_CAST") val list = e?.source as JList<Task>
             if (e.clickCount == 2) {
-                homework.management.main.run(TaskForm(list.selectedValue), "Zadanie", DISPOSE_ON_CLOSE, 1000, 1000)
+                run(TaskView(list.selectedValue), Resources.taskTitle, DISPOSE_ON_CLOSE, 1000, 1000)
             }
         }
     }
@@ -77,15 +78,15 @@ object TasksApp : JFrame() {
         tasksAssigned.sortWith(TaskComparator())
         tasksAssigned.forEach { modelAssigned.addElement(it) }
         listAssigned.model = modelAssigned
-        listAssigned.border = TitledBorder("Zadane")
+        listAssigned.border = TitledBorder(Resources.assignedLabel)
         listAssigned.addMouseListener(listListener)
         listAssigned.cellRenderer = object : DefaultListCellRenderer() {
             override fun getListCellRendererComponent(
-                list: JList<*>,
-                value: Any,
-                index: Int,
-                isSelected: Boolean,
-                cellHasFocus: Boolean
+                    list: JList<*>,
+                    value: Any,
+                    index: Int,
+                    isSelected: Boolean,
+                    cellHasFocus: Boolean
             ): Component {
                 val component = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus)
                 foreground = when {
@@ -102,12 +103,12 @@ object TasksApp : JFrame() {
 
         tasksToSend.forEach { modelToSend.addElement(it) }
         listToSend.model = modelToSend
-        listToSend.border = TitledBorder("Do wysłania")
+        listToSend.border = TitledBorder(Resources.toSendLabel)
         listToSend.addMouseListener(listListener)
 
         tasksFinished.forEach { modelFinished.addElement(it) }
         listFinished.model = modelFinished
-        listFinished.border = TitledBorder("Gotowe")
+        listFinished.border = TitledBorder(Resources.finishedLabel)
         listFinished.addMouseListener(listListener)
 
         val filters = JPanel()

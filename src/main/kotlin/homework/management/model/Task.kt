@@ -1,5 +1,6 @@
-package homework.management.main.model
+package homework.management.model
 
+import homework.management.model.TaskLists
 import java.util.*
 
 data class Task(val assignmentDate: Date, val dueDate: Date, val subject: String, val toSend: Boolean, val contents: String){

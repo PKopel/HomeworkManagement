@@ -1,11 +1,7 @@
-package homework.management.main.model
+package homework.management.model
 
-import homework.management.main.TaskComparator
-import homework.management.main.files.*
-import homework.management.main.files.moveTask
-import homework.management.main.files.readSubjects
-import homework.management.main.files.readTask
-import homework.management.main.files.writeTask
+import homework.management.TaskComparator
+import homework.management.files.*
 import java.io.File
 import java.text.SimpleDateFormat
 
@@ -23,7 +19,7 @@ object TaskLists {
     }
 
     fun fillSubjects(path: String) {
-        subjects.addAll(readSubjects(File("$path/przedmioty")))
+        subjects.addAll(readSubjects(File("$path/${Resources.subjectsFile}")))
     }
 
     fun addNewTask(assigned: String, due: String, subject: String, toSend: String, contents: String) {
@@ -42,31 +38,31 @@ object TaskLists {
 
     fun removeTask(task: Task) {
         val taskDir = when {
-            tasksAssigned.remove(task) -> "zadane"
-            tasksFinished.remove(task) -> "gotowe"
-            tasksToSend.remove(task) -> "do_wyslania"
+            tasksAssigned.remove(task) -> Resources.assignedDir
+            tasksFinished.remove(task) -> Resources.finishedDir
+            tasksToSend.remove(task) -> Resources.toSendDir
             else -> throw IllegalStateException()
         }
-        moveTask(task, taskDir, "./.usuniete")
+        moveTask(task, taskDir, Resources.deletedDir)
     }
 
     fun finishTask(taskId: Int): Task {
         val task = tasksAssigned.removeAt(taskId)
         val toDir = if (task.toSend) {
             tasksToSend.add(task)
-            "do_wyslania"
+            Resources.toSendDir
         } else {
             tasksFinished.add(task)
-            "gotowe"
+            Resources.finishedDir
         }
-        moveTask(task, "zadane", toDir)
+        moveTask(task, Resources.assignedDir, toDir)
         return task
     }
 
     fun sendTask(taskId: Int): Task {
         val task = tasksToSend.removeAt(taskId)
         tasksFinished.add(task)
-        moveTask(task, "do_wyslania", "gotowe")
+        moveTask(task, Resources.toSendDir, Resources.finishedDir)
         return task
     }
 }

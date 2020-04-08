@@ -1,9 +1,10 @@
-package homework.management.main.view
+package homework.management.view
 
-import homework.management.main.model.Task
-import homework.management.main.model.TaskLists
-import homework.management.main.model.TaskLists.dateFormat
-import homework.management.main.model.TaskLists.subjects
+import homework.management.files.Resources
+import homework.management.model.Task
+import homework.management.model.TaskLists
+import homework.management.model.TaskLists.dateFormat
+import homework.management.model.TaskLists.subjects
 import java.awt.BorderLayout
 import java.awt.GridLayout
 import java.awt.event.InputEvent.CTRL_DOWN_MASK
@@ -19,7 +20,7 @@ import javax.swing.text.DateFormatter
 import javax.swing.text.JTextComponent
 
 
-class TaskForm(private var viewing: Boolean) : JFrame() {
+class TaskView(private var viewing: Boolean) : JFrame() {
     private val subject = JComboBox<String>()
     private var task: Task? = null
 
@@ -31,11 +32,11 @@ class TaskForm(private var viewing: Boolean) : JFrame() {
     private val contents = JTextArea()
 
     private val buttons = JPanel(GridLayout(1, 3))
-    private val removeButton = button("Usuń") {
+    private val deleteButton = button(Resources.deleteLabel) {
         val confirmed = JOptionPane.showConfirmDialog(
                 null,
-                "Czy na pewno chcesz usunąć to zadanie?",
-                "Usuwanie zadania",
+                Resources.confirmDelete,
+                Resources.deleteTitle,
                 YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE
         )
@@ -45,7 +46,9 @@ class TaskForm(private var viewing: Boolean) : JFrame() {
             dispose()
         }
     }
-    private val saveButton = button(if (viewing) "Edytuj" else "Zapisz", KeyStroke.getKeyStroke(VK_S, CTRL_DOWN_MASK)) {
+    private val saveButton = button(
+            if (viewing) Resources.editLabel else Resources.saveLabel,
+            KeyStroke.getKeyStroke(VK_S, CTRL_DOWN_MASK)) {
         if (viewing) {
             viewing = false
             setEditable(true)
@@ -54,7 +57,9 @@ class TaskForm(private var viewing: Boolean) : JFrame() {
             dispose()
         }
     }
-    private val returnButton = button("Wróć", KeyStroke.getKeyStroke(VK_X, CTRL_DOWN_MASK)) {
+    private val returnButton = button(
+            Resources.exitLabel,
+            KeyStroke.getKeyStroke(VK_X, CTRL_DOWN_MASK)) {
         dispose()
     }
 
@@ -85,7 +90,7 @@ class TaskForm(private var viewing: Boolean) : JFrame() {
             if (it is JTextComponent) it.isEditable = editable
         }
         contents.isEditable = editable
-        saveButton.text = if (editable) "Zapisz" else "Edytuj"
+        saveButton.text = if (editable) Resources.saveLabel else Resources.editLabel
     }
 
     init {
@@ -96,7 +101,7 @@ class TaskForm(private var viewing: Boolean) : JFrame() {
         assignedDate.text = dateFormat.format(Date())
         assignedDate.addMouseListener(object : MouseAdapter() {
             override fun mouseClicked(e: MouseEvent) {
-                assignedDate.text = DatePicker(this@TaskForm).pickDate()
+                assignedDate.text = DatePicker(this@TaskView).pickDate()
             }
         })
 
@@ -105,15 +110,15 @@ class TaskForm(private var viewing: Boolean) : JFrame() {
         dueDate.text = dateFormat.format(Date())
         dueDate.addMouseListener(object : MouseAdapter() {
             override fun mouseClicked(e: MouseEvent) {
-                dueDate.text = DatePicker(this@TaskForm).pickDate()
+                dueDate.text = DatePicker(this@TaskView).pickDate()
             }
         })
 
-        subject.border = TitledBorder("Przedmoit")
-        assignedDate.border = TitledBorder("Data zadania")
-        dueDate.border = TitledBorder("Data oddania")
-        toSend.border = TitledBorder("Do wysłania")
-        contents.border = TitledBorder("Treść")
+        subject.border = TitledBorder(Resources.subjectTitle)
+        assignedDate.border = TitledBorder(Resources.assignedDateTitle)
+        dueDate.border = TitledBorder(Resources.dueDateTitle)
+        toSend.border = TitledBorder(Resources.toSendTitle)
+        contents.border = TitledBorder(Resources.contentsTitle)
 
         header.add(subject)
         header.add(assignedDate)
@@ -122,11 +127,12 @@ class TaskForm(private var viewing: Boolean) : JFrame() {
 
         this.add(BorderLayout.NORTH, header)
 
+        contents.lineWrap = true
         this.add(BorderLayout.CENTER, contents)
 
-        removeButton.isEnabled = viewing
+        deleteButton.isEnabled = viewing
         buttons.add(returnButton)
-        buttons.add(removeButton)
+        buttons.add(deleteButton)
         buttons.add(saveButton)
 
         this.add(BorderLayout.SOUTH, buttons)
