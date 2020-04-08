@@ -60,13 +60,13 @@ fun writeTask(task: Task) {
     val dueString = dateFormat.format(task.dueDate)
     val toSendString = if (task.toSend) "tak" else "nie"
     val file = File("${Resources.assignedDir}/$fileName")
-    file.writeText(
-            """${Resources.assignedDatePrefix}${assignedString}\n
-                    ${Resources.dueDatePrefix}${dueString}\n
-                    ${Resources.toSendPrefix}${toSendString}\n 
-                    ${Resources.subjectPrefix}${task.subject}\n
-                    ${task.contents}"""
-    )
+    file.writeText("""
+${Resources.assignedDatePrefix} ${assignedString}
+${Resources.dueDatePrefix} ${dueString}
+${Resources.toSendPrefix} ${toSendString} 
+${Resources.subjectPrefix} ${task.subject}
+${task.contents}
+""")
 }
 
 fun moveTask(task: Task, fromDir: String, toDir: String) {

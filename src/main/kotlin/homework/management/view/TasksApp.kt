@@ -1,7 +1,7 @@
 package homework.management.view
 
-import homework.management.DateDaysComparator
-import homework.management.TaskComparator
+import homework.management.model.DateDaysComparator
+import homework.management.model.TaskComparator
 import homework.management.files.Resources
 import homework.management.model.Task
 import homework.management.model.TaskLists

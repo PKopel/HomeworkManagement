@@ -1,13 +1,6 @@
-package homework.management
+package homework.management.model
 
-import homework.management.model.Task
 import java.util.*
-
-class TaskComparator : Comparator<Task> {
-    override fun compare(p0: Task?, p1: Task?): Int {
-        return DateDaysComparator().compare(p0?.dueDate, p1?.dueDate)
-    }
-}
 
 class DateDaysComparator : Comparator<Date> {
     override fun compare(d1: Date?, d2: Date?): Int {

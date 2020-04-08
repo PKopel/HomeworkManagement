@@ -1,6 +1,5 @@
 package homework.management.model
 
-import homework.management.TaskComparator
 import homework.management.files.*
 import java.io.File
 import java.text.SimpleDateFormat
