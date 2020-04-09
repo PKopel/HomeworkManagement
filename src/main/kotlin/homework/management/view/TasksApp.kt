@@ -31,9 +31,9 @@ object TasksApp : JFrame() {
                 }
             })
 
-    private val listToSend = list(tasksToSend, background = Color.YELLOW, title = Resources.toSendLabel)
-
-    private val listFinished = list(tasksFinished, background = Color.GREEN, title = Resources.finishLabel)
+    private val listToSend = list(tasksToSend, background = Color.WHITE, title = Resources.toSendLabel)
+    
+    private val listFinished = list(tasksFinished, background = Color.WHITE, title = Resources.finishLabel)
 
     private val addButton = button(Resources.addLabel, KeyStroke.getKeyStroke(VK_N, CTRL_DOWN_MASK)) {
         show(TaskView(true), Resources.taskTitle, DISPOSE_ON_CLOSE, 1000, 1000)

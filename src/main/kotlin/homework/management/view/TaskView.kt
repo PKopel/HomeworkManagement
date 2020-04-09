@@ -28,12 +28,18 @@ class TaskView(private var editable: Boolean, private val task: Task? = null) : 
         if (task != null) selectedItem = task.subject
     }
     private val assignedDate = formattedTextField(
-            text = dateFormat.format(task?.assignmentDate) ?: "",
+            text = when {
+                task != null -> dateFormat.format(task.assignmentDate)
+                else -> ""
+            },
             formatter = dateFormat,
             editable = editable,
             title = Resources.assignedDateTitle)
     private val dueDate = formattedTextField(
-            text = dateFormat.format(task?.dueDate) ?: "",
+            text = when {
+                task != null -> dateFormat.format(task.dueDate)
+                else -> ""
+            },
             formatter = dateFormat,
             editable = editable,
             title = Resources.assignedDateTitle)
@@ -106,7 +112,7 @@ class TaskView(private var editable: Boolean, private val task: Task? = null) : 
         (assignedDate.formatter as DateFormatter).overwriteMode = true
         assignedDate.addMouseListener(object : MouseAdapter() {
             override fun mouseClicked(e: MouseEvent) {
-                assignedDate.text = DatePicker(this@TaskView).pickDate()
+                if (editable) assignedDate.text = DatePicker(this@TaskView).pickDate()
             }
         })
 
@@ -114,7 +120,7 @@ class TaskView(private var editable: Boolean, private val task: Task? = null) : 
         (dueDate.formatter as DateFormatter).overwriteMode = true
         dueDate.addMouseListener(object : MouseAdapter() {
             override fun mouseClicked(e: MouseEvent) {
-                dueDate.text = DatePicker(this@TaskView).pickDate()
+                if (editable) dueDate.text = DatePicker(this@TaskView).pickDate()
             }
         })
 
