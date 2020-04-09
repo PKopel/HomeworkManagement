@@ -4,8 +4,8 @@ import homework.management.files.Resources
 import homework.management.files.checkDir
 import homework.management.model.TaskLists
 import homework.management.view.TasksApp
-import homework.management.view.run
-import homework.management.view.setUIFont
+import swingKt.show
+import swingKt.setUIFont
 import java.awt.Font
 import java.io.File
 import javax.swing.plaf.FontUIResource
@@ -36,5 +36,5 @@ fun main() {
     checkDir(pathToDeleted)
     TaskLists.fillSubjects(wd)
     TaskLists.fillLists(pathToAssigned, pathToFinished, pathToSend)
-    run(TasksApp, Resources.appTitle)
+    show(TasksApp, Resources.appTitle)
 }

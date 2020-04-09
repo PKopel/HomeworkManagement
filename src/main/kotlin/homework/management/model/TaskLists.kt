@@ -13,6 +13,7 @@ object TaskLists {
 
     fun fillLists(assigned: String, finished: String, toSend: String) {
         File(assigned).walk().forEach { if (it.isFile) tasksAssigned.add(readTask(it)) }
+        tasksAssigned.sortWith(TaskComparator())
         File(finished).walk().forEach { if (it.isFile) tasksFinished.add(readTask(it)) }
         File(toSend).walk().forEach { if (it.isFile) tasksToSend.add(readTask(it)) }
     }
