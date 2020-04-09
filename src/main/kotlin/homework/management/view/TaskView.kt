@@ -104,6 +104,7 @@ class TaskView(private var editable: Boolean, private val task: Task? = null) : 
             if (it is JTextComponent) it.isEditable = editable
         }
         contents.isEditable = editable
+        deleteButton.isEnabled = editable
         saveButton.text = if (editable) Resources.saveLabel else Resources.editLabel
     }
 
