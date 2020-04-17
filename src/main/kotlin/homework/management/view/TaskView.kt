@@ -30,6 +30,7 @@ class TaskView(private var viewing: Boolean) : JFrame() {
     private val toSend = JTextField()
 
     private val contents = JTextArea()
+    private val contentsWrapper = JScrollPane(contents)
 
     private val buttons = JPanel(GridLayout(1, 3))
     private val deleteButton = button(Resources.deleteLabel) {
@@ -118,7 +119,7 @@ class TaskView(private var viewing: Boolean) : JFrame() {
         assignedDate.border = TitledBorder(Resources.assignedDateTitle)
         dueDate.border = TitledBorder(Resources.dueDateTitle)
         toSend.border = TitledBorder(Resources.toSendTitle)
-        contents.border = TitledBorder(Resources.contentsTitle)
+        contentsWrapper.border = TitledBorder(Resources.contentsTitle)
 
         header.add(subject)
         header.add(assignedDate)
@@ -128,7 +129,8 @@ class TaskView(private var viewing: Boolean) : JFrame() {
         this.add(BorderLayout.NORTH, header)
 
         contents.lineWrap = true
-        this.add(BorderLayout.CENTER, contents)
+        contents.autoscrolls = true
+        this.add(BorderLayout.CENTER, contentsWrapper)
 
         deleteButton.isEnabled = viewing
         buttons.add(returnButton)
