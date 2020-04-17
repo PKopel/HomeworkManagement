@@ -51,6 +51,7 @@ class TaskView(private var editable: Boolean, private val task: Task? = null) : 
             title = Resources.toSendTitle,
             editable = editable)
 
+    private val contentsWrapper = JScrollPane()
     private val contents = JTextArea().apply {
         if (task != null) text = task.contents
     }
@@ -128,7 +129,7 @@ class TaskView(private var editable: Boolean, private val task: Task? = null) : 
         assignedDate.border = TitledBorder(Resources.assignedDateTitle)
         dueDate.border = TitledBorder(Resources.dueDateTitle)
         toSend.border = TitledBorder(Resources.toSendTitle)
-        contents.border = TitledBorder(Resources.contentsTitle)
+        contentsWrapper.border = TitledBorder(Resources.contentsTitle)
 
         header.add(subject)
         header.add(assignedDate)
@@ -138,7 +139,9 @@ class TaskView(private var editable: Boolean, private val task: Task? = null) : 
         this.add(BorderLayout.NORTH, header)
 
         contents.lineWrap = true
-        this.add(BorderLayout.CENTER, contents)
+        contents.autoscrolls = true
+        contentsWrapper.viewport.view = contents
+        this.add(BorderLayout.CENTER, contentsWrapper)
 
         deleteButton.isEnabled = editable
         buttons.add(returnButton)
