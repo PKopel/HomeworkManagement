@@ -112,6 +112,7 @@ class TaskView(private var editable: Boolean, private val task: Task? = null) : 
     init {
         (assignedDate.formatter as DateFormatter).allowsInvalid = false
         (assignedDate.formatter as DateFormatter).overwriteMode = true
+        if (editable) assignedDate.text = dateFormat.format(Date())
         assignedDate.addMouseListener(object : MouseAdapter() {
             override fun mouseClicked(e: MouseEvent) {
                 if (editable) assignedDate.text = DatePicker(this@TaskView).pickDate()
@@ -120,6 +121,7 @@ class TaskView(private var editable: Boolean, private val task: Task? = null) : 
 
         (dueDate.formatter as DateFormatter).allowsInvalid = false
         (dueDate.formatter as DateFormatter).overwriteMode = true
+        if (editable) dueDate.text = dateFormat.format(Date())
         dueDate.addMouseListener(object : MouseAdapter() {
             override fun mouseClicked(e: MouseEvent) {
                 if (editable) dueDate.text = DatePicker(this@TaskView).pickDate()

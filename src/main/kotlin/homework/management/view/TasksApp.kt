@@ -94,9 +94,9 @@ object TasksApp : JFrame() {
         this.add(BorderLayout.NORTH, filters)
 
         val lists = JPanel(GridLayout(1, 3))
-        lists.add(listAssigned.first)
-        lists.add(listToSend.first)
-        lists.add(listFinished.first)
+        lists.add(JScrollPane(listAssigned.first))
+        lists.add(JScrollPane(listToSend.first))
+        lists.add(JScrollPane(listFinished.first))
         this.add(BorderLayout.CENTER, lists)
 
         val buttons = JPanel(GridLayout(1, 3))
